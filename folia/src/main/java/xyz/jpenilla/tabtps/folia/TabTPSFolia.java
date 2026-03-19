@@ -83,7 +83,6 @@ public final class TabTPSFolia extends JavaPlugin implements TabTPSPlatform<Play
         UpdateChecker.checkVersion(this.getDescription().getVersion()).forEach(this.logger::info)
       );
     }
-    final Metrics metrics = new Metrics(this, 8458);
   }
 
   @Override

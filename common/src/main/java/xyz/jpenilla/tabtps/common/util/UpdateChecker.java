@@ -46,7 +46,7 @@ public final class UpdateChecker {
   public static @NonNull List<String> checkVersion(final @NonNull String version) {
     final JsonArray result;
     try {
-      result = parser.parse(new InputStreamReader(new URL("https://api.github.com/repos/jpenilla/TabTPS/releases").openStream(), Charsets.UTF_8)).getAsJsonArray();
+      result = parser.parse(new InputStreamReader(new URL("https://api.github.com/repos/MCbabel/TabTPS-Folia/releases").openStream(), Charsets.UTF_8)).getAsJsonArray();
     } catch (final IOException exception) {
       return Collections.singletonList("Failed to look for updates: " + exception.getMessage());
     }
