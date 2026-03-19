@@ -35,20 +35,14 @@ pluginManagement {
 }
 
 plugins {
-  id("quiet-fabric-loom") version "1.13-SNAPSHOT"
   id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-  id("net.neoforged.moddev.repositories") version "2.0.124"
 }
 
 rootProject.name = "TabTPS"
 
 listOf(
   "common",
-  "paper",
   "folia",
-  "sponge",
-  "fabric",
-  "neoforge",
 ).forEach { module ->
   include("tabtps-$module")
   project(":tabtps-$module").projectDir = file(module)

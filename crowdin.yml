@@ -1,3 +1,0 @@
-files:
-  - source: /common/src/main/messages/xyz/jpenilla/tabtps/common/messages.properties
-    translation: /common/src/main/messages/xyz/jpenilla/tabtps/common/messages_%locale_with_underscore%.properties
