@@ -2,6 +2,7 @@
  * This file is part of TabTPS, licensed under the MIT License.
  *
  * Copyright (c) 2020-2024 Jason Penilla
+ * Copyright (c) 2026 MCbabel (Folia support)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,43 +22,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package xyz.jpenilla.tabtps.common.module;
+package xyz.jpenilla.tabtps.folia.command;
 
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import xyz.jpenilla.tabtps.common.Messages;
-import xyz.jpenilla.tabtps.common.TabTPS;
-import xyz.jpenilla.tabtps.common.User;
-import xyz.jpenilla.tabtps.common.config.Theme;
-import xyz.jpenilla.tabtps.common.util.TPSUtil;
+import xyz.jpenilla.tabtps.common.command.ConsoleCommander;
 
-public final class MSPTModule extends AbstractModule {
-  private final @Nullable User<?> user;
+public final class FoliaConsoleCommander implements ConsoleCommander {
+  private final CommandSender commandSender;
+  private final Audience audience;
 
-  public MSPTModule(
-    final @NonNull TabTPS tabTPS,
-    final @NonNull Theme theme
-  ) {
-    this(tabTPS, theme, null);
+  private FoliaConsoleCommander(final @NonNull BukkitAudiences audiences, final @NonNull CommandSender sender) {
+    this.commandSender = sender;
+    this.audience = audiences.sender(sender);
   }
 
-  public MSPTModule(
-    final @NonNull TabTPS tabTPS,
-    final @NonNull Theme theme,
-    final @Nullable User<?> user
-  ) {
-    super(tabTPS, theme);
-    this.user = user;
+  public static @NonNull FoliaConsoleCommander from(final @NonNull BukkitAudiences audiences, final @NonNull CommandSender sender) {
+    return new FoliaConsoleCommander(audiences, sender);
   }
 
   @Override
-  public @NonNull Component label() {
-    return Messages.LABEL_MSPT.styled(this.theme.colorScheme().text());
+  public boolean hasPermission(final @NonNull String permissionString) {
+    return this.commandSender.hasPermission(permissionString);
   }
 
   @Override
-  public @NonNull Component display() {
-    return TPSUtil.coloredMspt(this.tabTPS.platform().tickTimeService().averageMspt(this.user), this.theme.colorScheme());
+  public @NonNull Audience audience() {
+    return this.audience;
+  }
+
+  public @NonNull CommandSender commandSender() {
+    return this.commandSender;
   }
 }

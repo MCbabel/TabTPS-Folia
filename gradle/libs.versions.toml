@@ -21,6 +21,7 @@ guava = "21.0"
 bstats = "3.1.0"
 paperApi = "1.16.5-R0.1-SNAPSHOT"
 paperLib = "1.0.8"
+foliaApi = "1.21.11-R0.1-SNAPSHOT"
 fabricApi = "0.139.5+1.21.11"
 fabricLoader = "0.18.2"
 minecraft = "1.21.11"
@@ -73,6 +74,7 @@ bstatsBukkit = { group = "org.bstats", name = "bstats-bukkit", version.ref = "bs
 
 paperApi = { group = "com.destroystokyo.paper", name = "paper-api", version.ref = "paperApi" }
 paperLib = { group = "io.papermc", name = "paperlib", version.ref = "paperLib" }
+foliaApi = { group = "dev.folia", name = "folia-api", version.ref = "foliaApi" }
 
 fabricApi = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabricApi" }
 fabricLoader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabricLoader" }

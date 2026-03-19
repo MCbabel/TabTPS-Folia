@@ -2,6 +2,7 @@
  * This file is part of TabTPS, licensed under the MIT License.
  *
  * Copyright (c) 2020-2024 Jason Penilla
+ * Copyright (c) 2026 MCbabel (Folia support)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,42 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package xyz.jpenilla.tabtps.common;
+package xyz.jpenilla.tabtps.folia.command;
 
-import java.nio.file.Path;
+import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.incendo.cloud.CommandManager;
-import org.slf4j.Logger;
+import org.incendo.cloud.bukkit.data.MultiplePlayerSelector;
+import org.incendo.cloud.context.CommandContext;
 import xyz.jpenilla.tabtps.common.command.Commander;
-import xyz.jpenilla.tabtps.common.service.RegionStatsService;
-import xyz.jpenilla.tabtps.common.service.TickTimeService;
-import xyz.jpenilla.tabtps.common.service.UserService;
+import xyz.jpenilla.tabtps.common.command.Commands;
+import xyz.jpenilla.tabtps.common.command.commands.PingCommand;
+import xyz.jpenilla.tabtps.folia.TabTPSFolia;
 
-public interface TabTPSPlatform<P, U extends User<P>> {
-  @NonNull UserService<P, U> userService();
+import static org.incendo.cloud.bukkit.parser.selector.MultiplePlayerSelectorParser.multiplePlayerSelectorParser;
 
-  @NonNull Path dataDirectory();
+public final class FoliaPingCommand extends PingCommand {
+  private final TabTPSFolia plugin;
 
-  @NonNull TabTPS tabTPS();
-
-  @NonNull TickTimeService tickTimeService();
-
-  default @Nullable RegionStatsService regionStatsService() {
-    return null;
+  public FoliaPingCommand(final @NonNull TabTPSFolia plugin, final @NonNull Commands commands) {
+    super(plugin.tabTPS(), commands);
+    this.plugin = plugin;
   }
 
-  int maxPlayers();
+  @Override
+  public void register() {
+    this.registerPingTargetsCommand(multiplePlayerSelectorParser(), this::onPingTargets);
+  }
 
-  void shutdown();
-
-  void onReload();
-
-  @NonNull Logger logger();
-
-  @NonNull CommandManager<Commander> commandManager();
-
-  default Throwable asComponentMessageThrowable(final Throwable thr) {
-    return thr;
+  private void onPingTargets(final @NonNull CommandContext<Commander> context) {
+    final MultiplePlayerSelector target = context.get("target");
+    this.pingTargets(
+      context.sender(),
+      target.values().stream()
+        .map(this.plugin.userService()::user)
+        .collect(Collectors.toList()),
+      target.inputString(),
+      context.get("page")
+    );
   }
 }

@@ -45,6 +45,7 @@ rootProject.name = "TabTPS"
 listOf(
   "common",
   "paper",
+  "folia",
   "sponge",
   "fabric",
   "neoforge",

@@ -25,17 +25,30 @@ package xyz.jpenilla.tabtps.common.module;
 
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import xyz.jpenilla.tabtps.common.Messages;
 import xyz.jpenilla.tabtps.common.TabTPS;
+import xyz.jpenilla.tabtps.common.User;
 import xyz.jpenilla.tabtps.common.config.Theme;
 import xyz.jpenilla.tabtps.common.util.TPSUtil;
 
 public final class TPSModule extends AbstractModule {
+  private final @Nullable User<?> user;
+
   public TPSModule(
     final @NonNull TabTPS tabTPS,
     final @NonNull Theme theme
   ) {
+    this(tabTPS, theme, null);
+  }
+
+  public TPSModule(
+    final @NonNull TabTPS tabTPS,
+    final @NonNull Theme theme,
+    final @Nullable User<?> user
+  ) {
     super(tabTPS, theme);
+    this.user = user;
   }
 
   @Override
@@ -45,6 +58,6 @@ public final class TPSModule extends AbstractModule {
 
   @Override
   public @NonNull Component display() {
-    return TPSUtil.coloredTps(this.tabTPS.platform().tickTimeService().displayTps(), this.theme.colorScheme());
+    return TPSUtil.coloredTps(this.tabTPS.platform().tickTimeService().displayTps(this.user), this.theme.colorScheme());
   }
 }

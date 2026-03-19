@@ -40,10 +40,13 @@ public final class ModuleType<T extends Module> {
 
   public static final ModuleType<CPUModule> CPU = withoutPlayer(CPUModule.class, CPUModule::new, "cpu");
   public static final ModuleType<MemoryModule> MEMORY = withoutPlayer(MemoryModule.class, MemoryModule::new, "memory");
-  public static final ModuleType<MSPTModule> MSPT = withoutPlayer(MSPTModule.class, MSPTModule::new, "mspt");
-  public static final ModuleType<TPSModule> TPS = withoutPlayer(TPSModule.class, TPSModule::new, "tps");
+  public static final ModuleType<MSPTModule> MSPT = optionalPlayer(MSPTModule.class, MSPTModule::new, "mspt");
+  public static final ModuleType<TPSModule> TPS = optionalPlayer(TPSModule.class, TPSModule::new, "tps");
   public static final ModuleType<PingModule> PING = withPlayer(PingModule.class, PingModule::new, "ping");
   public static final ModuleType<PlayerCountModule> PLAYER_COUNT = withoutPlayer(PlayerCountModule.class, PlayerCountModule::new, "players");
+  public static final ModuleType<LowestRegionTPSModule> LOWEST_REGION_TPS = withoutPlayer(LowestRegionTPSModule.class, LowestRegionTPSModule::new, "lowest_region_tps");
+  public static final ModuleType<MedianRegionTPSModule> MEDIAN_REGION_TPS = withoutPlayer(MedianRegionTPSModule.class, MedianRegionTPSModule::new, "median_region_tps");
+  public static final ModuleType<HighestRegionTPSModule> HIGHEST_REGION_TPS = withoutPlayer(HighestRegionTPSModule.class, HighestRegionTPSModule::new, "highest_region_tps");
 
   public static Collection<ModuleType<?>> moduleTypes() {
     return Collections.unmodifiableCollection(TYPES_BY_NAME.values());
@@ -77,6 +80,14 @@ public final class ModuleType<T extends Module> {
       name,
       false
     );
+  }
+
+  private static <T extends Module> @NonNull ModuleType<T> optionalPlayer(
+    final @NonNull Class<T> moduleClass,
+    final @NonNull ModuleFactory<T> moduleFactory,
+    final @NonNull String name
+  ) {
+    return new ModuleType<>(moduleClass, moduleFactory, name, false);
   }
 
   private static <T extends Module> @NonNull ModuleType<T> withPlayer(

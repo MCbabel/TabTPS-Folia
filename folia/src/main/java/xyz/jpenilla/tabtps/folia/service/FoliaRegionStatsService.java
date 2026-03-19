@@ -2,6 +2,7 @@
  * This file is part of TabTPS, licensed under the MIT License.
  *
  * Copyright (c) 2020-2024 Jason Penilla
+ * Copyright (c) 2026 MCbabel (Folia support)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,42 +22,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package xyz.jpenilla.tabtps.common;
+package xyz.jpenilla.tabtps.folia.service;
 
-import java.nio.file.Path;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.incendo.cloud.CommandManager;
-import org.slf4j.Logger;
-import xyz.jpenilla.tabtps.common.command.Commander;
+import java.util.Collections;
+import java.util.List;
 import xyz.jpenilla.tabtps.common.service.RegionStatsService;
-import xyz.jpenilla.tabtps.common.service.TickTimeService;
-import xyz.jpenilla.tabtps.common.service.UserService;
 
-public interface TabTPSPlatform<P, U extends User<P>> {
-  @NonNull UserService<P, U> userService();
+public final class FoliaRegionStatsService implements RegionStatsService {
+  private final FoliaTickTimeService tickTimeService;
 
-  @NonNull Path dataDirectory();
-
-  @NonNull TabTPS tabTPS();
-
-  @NonNull TickTimeService tickTimeService();
-
-  default @Nullable RegionStatsService regionStatsService() {
-    return null;
+  public FoliaRegionStatsService(final FoliaTickTimeService tickTimeService) {
+    this.tickTimeService = tickTimeService;
   }
 
-  int maxPlayers();
+  private List<Double> collectRegionTps() {
+    if (this.tickTimeService.accessor == null) {
+      return Collections.emptyList();
+    }
+    return this.tickTimeService.accessor.collectAllRegionTps();
+  }
 
-  void shutdown();
+  @Override
+  public double lowestRegionTps() {
+    final List<Double> tps = this.collectRegionTps();
+    if (tps.isEmpty()) return 20.0;
+    return tps.get(0);
+  }
 
-  void onReload();
+  @Override
+  public double medianRegionTps() {
+    final List<Double> tps = this.collectRegionTps();
+    if (tps.isEmpty()) return 20.0;
+    final int size = tps.size();
+    if (size % 2 == 0) {
+      return (tps.get(size / 2 - 1) + tps.get(size / 2)) / 2.0;
+    }
+    return tps.get(size / 2);
+  }
 
-  @NonNull Logger logger();
-
-  @NonNull CommandManager<Commander> commandManager();
-
-  default Throwable asComponentMessageThrowable(final Throwable thr) {
-    return thr;
+  @Override
+  public double highestRegionTps() {
+    final List<Double> tps = this.collectRegionTps();
+    if (tps.isEmpty()) return 20.0;
+    return tps.get(tps.size() - 1);
   }
 }

@@ -1,0 +1,10 @@
+name: TabTPS
+version: ${version}
+main: xyz.jpenilla.tabtps.folia.TabTPSFolia
+api-version: "1.20"
+folia-supported: true
+description: ${description}
+website: ${github}
+authors:
+  - MCbabel
+  - jmp

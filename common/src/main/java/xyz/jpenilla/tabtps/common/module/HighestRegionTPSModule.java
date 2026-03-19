@@ -25,39 +25,32 @@ package xyz.jpenilla.tabtps.common.module;
 
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import xyz.jpenilla.tabtps.common.Messages;
 import xyz.jpenilla.tabtps.common.TabTPS;
-import xyz.jpenilla.tabtps.common.User;
 import xyz.jpenilla.tabtps.common.config.Theme;
+import xyz.jpenilla.tabtps.common.service.RegionStatsService;
 import xyz.jpenilla.tabtps.common.util.TPSUtil;
 
-public final class MSPTModule extends AbstractModule {
-  private final @Nullable User<?> user;
+import static net.kyori.adventure.text.Component.text;
 
-  public MSPTModule(
+public final class HighestRegionTPSModule extends AbstractModule {
+  public HighestRegionTPSModule(
     final @NonNull TabTPS tabTPS,
     final @NonNull Theme theme
   ) {
-    this(tabTPS, theme, null);
-  }
-
-  public MSPTModule(
-    final @NonNull TabTPS tabTPS,
-    final @NonNull Theme theme,
-    final @Nullable User<?> user
-  ) {
     super(tabTPS, theme);
-    this.user = user;
   }
 
   @Override
   public @NonNull Component label() {
-    return Messages.LABEL_MSPT.styled(this.theme.colorScheme().text());
+    return text("High Region TPS", this.theme.colorScheme().text());
   }
 
   @Override
   public @NonNull Component display() {
-    return TPSUtil.coloredMspt(this.tabTPS.platform().tickTimeService().averageMspt(this.user), this.theme.colorScheme());
+    final RegionStatsService service = this.tabTPS.platform().regionStatsService();
+    if (service == null) {
+      return text("N/A", this.theme.colorScheme().textSecondary());
+    }
+    return TPSUtil.coloredTps(service.highestRegionTps(), this.theme.colorScheme());
   }
 }

@@ -2,6 +2,7 @@
  * This file is part of TabTPS, licensed under the MIT License.
  *
  * Copyright (c) 2020-2024 Jason Penilla
+ * Copyright (c) 2026 MCbabel (Folia support)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,43 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package xyz.jpenilla.tabtps.common.module;
+package xyz.jpenilla.tabtps.folia;
 
-import net.kyori.adventure.text.Component;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import xyz.jpenilla.tabtps.common.Messages;
-import xyz.jpenilla.tabtps.common.TabTPS;
-import xyz.jpenilla.tabtps.common.User;
-import xyz.jpenilla.tabtps.common.config.Theme;
-import xyz.jpenilla.tabtps.common.util.TPSUtil;
 
-public final class MSPTModule extends AbstractModule {
-  private final @Nullable User<?> user;
+public final class FoliaJoinQuitListener implements Listener {
+  private final TabTPSFolia plugin;
 
-  public MSPTModule(
-    final @NonNull TabTPS tabTPS,
-    final @NonNull Theme theme
-  ) {
-    this(tabTPS, theme, null);
+  public FoliaJoinQuitListener(final @NonNull TabTPSFolia plugin) {
+    this.plugin = plugin;
   }
 
-  public MSPTModule(
-    final @NonNull TabTPS tabTPS,
-    final @NonNull Theme theme,
-    final @Nullable User<?> user
-  ) {
-    super(tabTPS, theme);
-    this.user = user;
+  @EventHandler
+  public void onJoin(final @NonNull PlayerJoinEvent e) {
+    this.plugin.userService().handleJoin(e.getPlayer());
   }
 
-  @Override
-  public @NonNull Component label() {
-    return Messages.LABEL_MSPT.styled(this.theme.colorScheme().text());
-  }
-
-  @Override
-  public @NonNull Component display() {
-    return TPSUtil.coloredMspt(this.tabTPS.platform().tickTimeService().averageMspt(this.user), this.theme.colorScheme());
+  @EventHandler
+  public void onQuit(final @NonNull PlayerQuitEvent e) {
+    this.plugin.userService().handleQuit(e.getPlayer());
   }
 }
