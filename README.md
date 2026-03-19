@@ -1,26 +1,38 @@
 <img src="https://i.imgur.com/gtxPU4S.png" width="128">
 
-# TabTPS
-![plugin version badge](https://img.shields.io/github/v/release/jmanpenilla/TabTPS?color=blue&label=version&style=plastic) [![Crowdin](https://badges.crowdin.net/tabtps/localized.svg)](https://crowdin.com/project/tabtps)
+# TabTPS-Folia
 
-Minecraft server mod/plugin to show TPS, MSPT, and other information in the tab menu, boss bar, and action bar.
+A fork of [TabTPS by jpenilla](https://github.com/jpenilla/TabTPS) with **Folia support**.
 
-Current supported platforms:
-- [Paper](https://papermc.io) (Minecraft versions 1.8.8-1.21.11+)
-- [Sponge](https://spongepowered.org) 12+
-- [Fabric](https://fabricmc.net/) (Minecraft 1.21.11, requires [Fabric API](https://modrinth.com/mod/fabric-api))
-- [NeoForge](https://neoforged.net/) (Minecraft 1.21.11)
+Shows TPS, MSPT, and other server information in the tab menu, boss bar, and action bar — with **per-region tick data** on Folia servers.
+
+## Platform
+
+- [Folia](https://papermc.io/software/folia) (Minecraft 1.20+, Java 21)
 
 ## Features
 
-### Live information displays
+### Regional TPS/MSPT
 
-- Configure what information will be shown using display configs (`/plugins/TabTPS/display-configs/`)
-  - Each display config has a permission associated, and players with that permission will use that display config.
-    - The default display config uses the permission `tabtps.defaultdisplay`, and allows for using all three display types.
-    - Only one display config can be assigned to each player, even if they have permission for multiple. Set priorities for different display configs in the main config (`plugins/TabTPS/main.conf`)
-    
-- Configure colors for displays using theme configs (`/plugins/TabTPS/themes/`)
+On Folia, each player sees the TPS and MSPT of **their current region**, not a global average. When a player moves between regions, the displayed values update automatically.
+
+### Additional Folia Modules
+
+These modules can be used in display configs to show server-wide region statistics:
+
+| Module | Description |
+|---|---|
+| `tps` | TPS of the player's current region |
+| `mspt` | MSPT of the player's current region |
+| `lowest_region_tps` | Lowest TPS across all active regions |
+| `median_region_tps` | Median TPS across all active regions |
+| `highest_region_tps` | Highest TPS across all active regions |
+| `ping` | Player ping |
+| `cpu` | CPU usage |
+| `memory` | Memory usage |
+| `players` | Online player count |
+
+### Live Information Displays
 
 #### Tab menu
 * Command: ``/tabtps toggle tab``
@@ -34,27 +46,44 @@ Current supported platforms:
  * Command: ``/tabtps toggle bossbar``
  * ![boss bar](https://i.postimg.cc/xCJnGYfb/bossbar.png)
 
+Configure display modules and themes in `plugins/TabTPS/display-configs/` and `plugins/TabTPS/themes/`.
+
 ### Commands
 
-#### Improved TPS command
+#### Tick Info command
 * Command: ``/tickinfo`` or ``/mspt``
+* Shows region TPS overview (Lowest/Median/Highest)
 * Permission required: ``tabtps.tps``
 * ![tps command](https://i.imgur.com/d87Z80z.png)
 
 #### Memory command
 * Command: ``/memory``, `/mem`, or ``/ram``
-* View information about the current memory pools of the server jvm.
-  * Note: the output and usefulness of this command varies depending on the type of garbage collection used, garbage collection settings, and many other factors.
 * Permission required: ``tabtps.tps``
-* ![tps command](https://i.imgur.com/eYeUNMc.png)
+* ![memory command](https://i.imgur.com/eYeUNMc.png)
 
 #### Ping command
 * Commands: ``/ping``, `/ping [username]`, or ``/pingall``
-* View the ping of yourself, or another user. ``/pingall`` will show a summary of all connected player's pings.
-* Permissions: ``tabtps.ping`` to view your own ping, ``tabtps.ping.others`` to view other users ping and the ping summary.
+* Permissions: ``tabtps.ping`` to view your own ping, ``tabtps.ping.others`` to view other users ping.
 * ![ping command](https://i.imgur.com/0agY7lB.png)
 * ![ping all](https://i.imgur.com/t1lBt2b.png)
 
 #### Reload command
 * Command: ``/tabtps reload``
 * Permission required: ``tabtps.reload``
+
+## Building
+
+```bash
+./gradlew :tabtps-folia:shadowJar
+```
+
+The built JAR will be at `folia/build/libs/tabtps-folia-*.jar`.
+
+## Credits
+
+- Original [TabTPS](https://github.com/jpenilla/TabTPS) by [jpenilla](https://github.com/jpenilla) (MIT License)
+- Folia support by [MCbabel](https://github.com/MCbabel)
+
+## License
+
+[MIT License](license.txt) — Copyright (c) 2020-2024 Jason Penilla, Copyright (c) 2026 MCbabel
