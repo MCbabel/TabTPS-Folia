@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/gtxPU4S.png" width="128">
+<img src="https://i.imgur.com/EYo9tBh.png" width="128">
 
 # TabTPS-Folia
 
@@ -43,8 +43,8 @@ These modules can be used in display configs to show server-wide region statisti
 * ![action bar](https://i.imgur.com/aMzzNRR.png)
 
 #### Boss bar
- * Command: ``/tabtps toggle bossbar``
- * ![boss bar](https://i.postimg.cc/xCJnGYfb/bossbar.png)
+* Command: ``/tabtps toggle bossbar``
+* ![boss bar](https://i.postimg.cc/xCJnGYfb/bossbar.png)
 
 Configure display modules and themes in `plugins/TabTPS/display-configs/` and `plugins/TabTPS/themes/`.
 
@@ -54,7 +54,7 @@ Configure display modules and themes in `plugins/TabTPS/display-configs/` and `p
 * Command: ``/tickinfo`` or ``/mspt``
 * Shows region TPS overview (Lowest/Median/Highest)
 * Permission required: ``tabtps.tps``
-* ![tps command](https://i.imgur.com/d87Z80z.png)
+* ![tps command](https://i.imgur.com/w69C8r1.png)
 
 #### Memory command
 * Command: ``/memory``, `/mem`, or ``/ram``

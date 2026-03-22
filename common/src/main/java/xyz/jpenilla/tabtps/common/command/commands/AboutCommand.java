@@ -64,14 +64,16 @@ public final class AboutCommand extends TabTPSCommand {
       header,
       newline(),
       text()
-        .content("TabTPS ")
+        .content("TabTPS Folia ")
         .append(gradient(Constants.TABTPS_VERSION, BLUE, AQUA))
-        .clickEvent(openUrl("https://github.com/jpenilla/TabTPS"))
+        .clickEvent(openUrl("https://github.com/MCbabel/TabTPS-Folia"))
         .hoverEvent(MINIMESSAGE.deserialize("<rainbow>click me!")),
       newline(),
       text()
         .content("By ")
         .color(GRAY)
+        .append(text("MCbabel", AQUA))
+        .append(text(" & ", GRAY))
         .append(text("jmp", BLUE)),
       newline(),
       header

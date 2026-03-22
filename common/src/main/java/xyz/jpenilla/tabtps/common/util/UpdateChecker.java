@@ -68,7 +68,7 @@ public final class UpdateChecker {
     list.add("There is an update available for TabTPS!");
     list.add("This server is running version " + currentVersion + ", which is " + (versionsBehind == -1 ? "UNKNOWN" : versionsBehind) + " versions outdated.");
     list.add("Download the latest version, " + versionList.get(0) + " from Modrinth at the link below:");
-    list.add("https://modrinth.com/plugin/tabtps");
+    list.add("https://modrinth.com/plugin/tabtps-folia");
     return list;
   }
 }
