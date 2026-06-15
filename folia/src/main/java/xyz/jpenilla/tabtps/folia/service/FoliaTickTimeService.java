@@ -215,14 +215,19 @@ public final class FoliaTickTimeService implements TickTimeService {
       final Class<?> handleClass = handleMethod.getReturnType();
 
       Method tickReportMethod = null;
+      Method tickReportFallback = null;
       for (final Method m : handleClass.getDeclaredMethods()) {
         final String name = m.getName().toLowerCase();
         if (m.getParameterCount() <= 1 && (name.contains("tickreport") || name.contains("tick_report"))) {
           m.setAccessible(true);
-          tickReportMethod = m;
-          break;
+          if (tickReportFallback == null) tickReportFallback = m;
+          if (name.contains("5s")) {
+            tickReportMethod = m;
+            break;
+          }
         }
       }
+      if (tickReportMethod == null) tickReportMethod = tickReportFallback;
       if (tickReportMethod == null) {
         for (final Method m : handleClass.getDeclaredMethods()) {
           if (m.getParameterCount() == 0 && !m.getReturnType().isPrimitive()) {
