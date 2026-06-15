@@ -8,7 +8,7 @@ Shows TPS, MSPT, and other server information in the tab menu, boss bar, and act
 
 ## Platform
 
-- [Folia](https://papermc.io/software/folia) (Minecraft 1.20+, Java 21)
+- [Folia](https://papermc.io/software/folia) — built and tested for Minecraft **26.1.2**, requires **Java 25**
 
 ## Features
 
